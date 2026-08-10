@@ -1,0 +1,113 @@
+{
+  "title": "NTRS Restart Reminder",
+  "description": "Managed settings for the macOS restart reminder LaunchDaemon and swiftDialog UI.",
+  "properties": {
+    "Enabled": {
+      "title": "Enable Restart Reminder",
+      "description": "Turns the restart reminder workflow on or off. The LaunchDaemon remains installed but exits immediately when disabled.",
+      "type": "boolean",
+      "default": true
+    },
+    "PersistentWindow": {
+      "title": "Persistent Window",
+      "description": "When enabled, the normal restart reminder stays on top, cannot be moved, uses protected keyboard dismissal behavior, and is automatically reopened if dismissed without choosing Restart Now or Snooze.",
+      "type": "boolean",
+      "default": false
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Main restart reminder message shown to the user.",
+      "type": "string",
+      "default": "Your Mac needs to restart to complete maintenance and remain secure. Please save your work and restart."
+    },
+    "MessageTitle": {
+      "title": "Message Title",
+      "type": "string",
+      "default": "Restart Required"
+    },
+    "Icon": {
+      "title": "Icon",
+      "description": "swiftDialog icon value. Example: SF=arrow.clockwise.circle.fill or a local file path.",
+      "type": "string",
+      "default": "SF=arrow.clockwise.circle.fill"
+    },
+    "Banner": {
+      "title": "Banner",
+      "description": "Optional local path or supported swiftDialog banner image value.",
+      "type": "string",
+      "default": ""
+    },
+    "ButtonName": {
+      "title": "Restart Button Name",
+      "type": "string",
+      "default": "Restart Now"
+    },
+    "SnoozeButtonName": {
+      "title": "Snooze Button Name",
+      "type": "string",
+      "default": "Snooze"
+    },
+    "ForceRestartWindowMessage": {
+      "title": "Final Forced Restart Message",
+      "type": "string",
+      "default": "Your allowed restart deferrals have been used. Save your work now. This Mac will restart automatically when the countdown reaches zero."
+    },
+    "ForceRestartWindowTitle": {
+      "title": "Final Forced Restart Title",
+      "type": "string",
+      "default": "Restart Required Now"
+    },
+    "ForceRestartWindowIcon": {
+      "title": "Final Forced Restart Icon",
+      "type": "string",
+      "default": "SF=exclamationmark.triangle.fill"
+    },
+    "CountDownTimer": {
+      "title": "Final Countdown Timer (seconds)",
+      "description": "Number of seconds shown in the final forced restart window.",
+      "type": "integer",
+      "minimum": 60,
+      "default": 900
+    },
+    "RestartIntervalDays": {
+      "title": "Restart Interval (days)",
+      "description": "Show restart workflow after the Mac has been running this many full days.",
+      "type": "integer",
+      "minimum": 1,
+      "default": 7
+    },
+    "SnoozeCount": {
+      "title": "Maximum Snooze Count",
+      "type": "integer",
+      "minimum": 0,
+      "default": 3
+    },
+    "SnoozeIntervalHours": {
+      "title": "Snooze Interval (hours)",
+      "description": "How long to wait before prompting again after a snooze.",
+      "type": "integer",
+      "minimum": 1,
+      "default": 4
+    },
+    "CheckDNDOrMeeting": {
+      "title": "Check Active Meeting",
+      "description": "Defers normal reminders when a supported conferencing app is running and an active microphone or conferencing power assertion is detected. DND/Focus is ignored. The legacy key name is retained for profile compatibility. Does not defer the final forced restart.",
+      "type": "boolean",
+      "default": true
+    },
+    "MeetingDeferralMinutes": {
+      "title": "Active Meeting Deferral (minutes)",
+      "description": "Temporary deferral when an active meeting is detected.",
+      "type": "integer",
+      "minimum": 15,
+      "default": 60
+    },
+    "LogFileLocation": {
+      "title": "Log File Location",
+      "description": "Absolute log filename directly under /var/log. Subdirectories and other locations are rejected for security.",
+      "type": "string",
+      "pattern": "^/var/log/[A-Za-z0-9._-]+$",
+      "default": "/var/log/ntrs-restart-reminder.log"
+    }
+  }
+}

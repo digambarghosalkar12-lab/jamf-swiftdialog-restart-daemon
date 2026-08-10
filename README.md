@@ -161,6 +161,17 @@ the result to this controller.
 
 ## Installation
 
+`install.sh` is self-contained and generates both the controller and LaunchDaemon
+from embedded payloads. Run it as root; the `scripts/` and `launchdaemon/` source
+directories do not need to be copied to the target Mac.
+
+```bash
+sudo ./install.sh
+```
+
+For manual packaging, the equivalent source files and destinations are shown
+below.
+
 Copy:
 
 ```text

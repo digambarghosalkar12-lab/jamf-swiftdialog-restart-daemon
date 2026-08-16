@@ -184,6 +184,27 @@ sudo ./install.sh
 For manual packaging, the equivalent source files and destinations are shown
 below.
 
+### Generate Jamf assets
+
+Run:
+
+```bash
+./generate-jamf-assets.sh
+```
+
+This creates `dist/jamf-install.sh`, `dist/jamf-uninstall.sh`, and
+`dist/com.ntrs.restartreminder.schema.json`. Add the install or uninstall script
+to a Jamf policy and paste the JSON file into **Application & Custom Settings**.
+
+An alternate output directory can be supplied as the first argument.
+
+### Uninstallation
+
+Use `uninstall.sh` directly or the generated `dist/jamf-uninstall.sh`. The
+uninstaller removes the installed daemon, controller, state, local preferences,
+and logs. Remove the configuration profile's Jamf scope separately because
+managed preferences are controlled by MDM.
+
 Copy:
 
 ```text

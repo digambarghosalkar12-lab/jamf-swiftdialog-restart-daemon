@@ -2,20 +2,20 @@
 # Jamf + swiftDialog Restart Reminder
 # Runs as root from LaunchDaemon.
 # Configuration is delivered by Jamf Application & Custom Settings.
-# Preference domain: com.ntrs.restartreminder
+# Preference domain: com.mrr.restartreminder
 
 set -u
 
 PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
-PREF_DOMAIN="com.ntrs.restartreminder"
+PREF_DOMAIN="com.mrr.restartreminder"
 MANAGED_PLIST="/Library/Managed Preferences/${PREF_DOMAIN}.plist"
 LOCAL_PREF_PLIST="/Library/Preferences/${PREF_DOMAIN}.plist"
 
-STATE_DIR="/Library/Application Support/NTRSRestartReminder"
+STATE_DIR="/Library/Application Support/MRRRestartReminder"
 STATE_PLIST="${STATE_DIR}/state.plist"
 LEGACY_STATE_PLIST="/Library/Application Support/DGRestartReminder/state.plist"
 
-DEFAULT_LOG="/var/log/ntrs-restart-reminder.log"
+DEFAULT_LOG="/var/log/mrr-restart-reminder.log"
 DIALOG_CANDIDATES=(
   "/usr/local/bin/dialog"
   "/Library/Application Support/Dialog/Dialog.app/Contents/MacOS/Dialog"
@@ -155,7 +155,7 @@ clear_restart_logs() {
   local configured_log
   configured_log="$(get_log_file)"
   /bin/rm -f "$configured_log" "$DEFAULT_LOG" \
-    "/var/log/ntrs-restart-reminder-launchd.log"
+    "/var/log/mrr-restart-reminder-launchd.log"
 }
 
 force_quit_user_apps() {

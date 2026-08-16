@@ -4,9 +4,9 @@
 set -euo pipefail
 
 PROJECT_DIR="${0:A:h}"
-CONTROLLER_SOURCE="${PROJECT_DIR}/scripts/ntrs-restart-reminder.zsh"
-PLIST_SOURCE="${PROJECT_DIR}/launchdaemon/com.ntrs.restartreminder.plist"
-SCHEMA_SOURCE="${PROJECT_DIR}/jamf/com.ntrs.restartreminder.schema.json"
+CONTROLLER_SOURCE="${PROJECT_DIR}/scripts/mrr-restart-reminder.zsh"
+PLIST_SOURCE="${PROJECT_DIR}/launchdaemon/com.mrr.restartreminder.plist"
+SCHEMA_SOURCE="${PROJECT_DIR}/jamf/com.mrr.restartreminder.schema.json"
 UNINSTALL_SOURCE="${PROJECT_DIR}/uninstall.sh"
 OUTPUT_DIR="${1:-${PROJECT_DIR}/dist}"
 
@@ -51,22 +51,22 @@ prompt_asset_filename \
   INSTALL_ASSET_NAME \
   "Jamf install script" \
   "-install.sh" \
-  "ntrs-restart-reminder-install.sh" \
+  "mrr-restart-reminder-install.sh" \
   "jamf-install.sh"
 
 prompt_asset_filename \
   UNINSTALL_ASSET_NAME \
   "Jamf uninstall script" \
   "-uninstall.sh" \
-  "ntrs-restart-reminder-uninstall.sh" \
+  "mrr-restart-reminder-uninstall.sh" \
   "jamf-uninstall.sh"
 
 prompt_asset_filename \
   SCHEMA_ASSET_NAME \
   "Jamf Custom JSON Schema" \
   ".json" \
-  "com.ntrs.restartreminder.schema.json" \
-  "com.ntrs.restartreminder.schema.json"
+  "com.mrr.restartreminder.schema.json" \
+  "com.mrr.restartreminder.schema.json"
 
 INSTALL_OUTPUT="${OUTPUT_DIR}/${INSTALL_ASSET_NAME}"
 UNINSTALL_OUTPUT="${OUTPUT_DIR}/${UNINSTALL_ASSET_NAME}"
@@ -84,12 +84,12 @@ for required_file in \
 done
 
 # Exact delimiter lines would prematurely close the generated heredocs.
-if /usr/bin/grep -qx 'NTRS_CONTROLLER' "$CONTROLLER_SOURCE"; then
-  echo "Controller contains reserved line: NTRS_CONTROLLER" >&2
+if /usr/bin/grep -qx 'MRR_CONTROLLER' "$CONTROLLER_SOURCE"; then
+  echo "Controller contains reserved line: MRR_CONTROLLER" >&2
   exit 1
 fi
-if /usr/bin/grep -qx 'NTRS_LAUNCHDAEMON' "$PLIST_SOURCE"; then
-  echo "LaunchDaemon contains reserved line: NTRS_LAUNCHDAEMON" >&2
+if /usr/bin/grep -qx 'MRR_LAUNCHDAEMON' "$PLIST_SOURCE"; then
+  echo "LaunchDaemon contains reserved line: MRR_LAUNCHDAEMON" >&2
   exit 1
 fi
 
@@ -97,13 +97,13 @@ fi
 
 /bin/cat > "$INSTALL_OUTPUT" <<'INSTALL_HEADER'
 #!/bin/zsh
-# Generated Jamf installation script for NTRS Restart Reminder.
+# Generated Jamf installation script for macOS Restart Reminder (MRR).
 # Controller and LaunchDaemon payloads are plain text and can be edited below.
 
 set -e
 
-SCRIPT_DEST="/usr/local/bin/ntrs-restart-reminder"
-PLIST_DEST="/Library/LaunchDaemons/com.ntrs.restartreminder.plist"
+SCRIPT_DEST="/usr/local/bin/mrr-restart-reminder"
+PLIST_DEST="/Library/LaunchDaemons/com.mrr.restartreminder.plist"
 LEGACY_SCRIPT_DEST="/usr/local/bin/dg-restart-reminder"
 LEGACY_PLIST_DEST="/Library/LaunchDaemons/com.dg.restartreminder.plist"
 
@@ -116,34 +116,34 @@ fi
 /bin/rm -f "$LEGACY_SCRIPT_DEST" "$LEGACY_PLIST_DEST"
 /bin/mkdir -p /usr/local/bin
 
-/bin/cat <<'NTRS_CONTROLLER' > "$SCRIPT_DEST"
+/bin/cat <<'MRR_CONTROLLER' > "$SCRIPT_DEST"
 INSTALL_HEADER
 
 /bin/cat "$CONTROLLER_SOURCE" >> "$INSTALL_OUTPUT"
 
 /bin/cat >> "$INSTALL_OUTPUT" <<'INSTALL_MIDDLE'
-NTRS_CONTROLLER
+MRR_CONTROLLER
 
 /usr/sbin/chown root:wheel "$SCRIPT_DEST"
 /bin/chmod 755 "$SCRIPT_DEST"
 
-/bin/cat <<'NTRS_LAUNCHDAEMON' > "$PLIST_DEST"
+/bin/cat <<'MRR_LAUNCHDAEMON' > "$PLIST_DEST"
 INSTALL_MIDDLE
 
 /bin/cat "$PLIST_SOURCE" >> "$INSTALL_OUTPUT"
 
 /bin/cat >> "$INSTALL_OUTPUT" <<'INSTALL_FOOTER'
-NTRS_LAUNCHDAEMON
+MRR_LAUNCHDAEMON
 
 /usr/sbin/chown root:wheel "$PLIST_DEST"
 /bin/chmod 644 "$PLIST_DEST"
 
 /bin/launchctl bootout system "$PLIST_DEST" >/dev/null 2>&1 || true
 /bin/launchctl bootstrap system "$PLIST_DEST"
-/bin/launchctl enable system/com.ntrs.restartreminder
-/bin/launchctl kickstart -k system/com.ntrs.restartreminder
+/bin/launchctl enable system/com.mrr.restartreminder
+/bin/launchctl kickstart -k system/com.mrr.restartreminder
 
-echo "Installed com.ntrs.restartreminder"
+echo "Installed com.mrr.restartreminder"
 INSTALL_FOOTER
 
 /bin/cp "$UNINSTALL_SOURCE" "$UNINSTALL_OUTPUT"

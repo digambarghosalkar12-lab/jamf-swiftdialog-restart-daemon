@@ -1,11 +1,11 @@
 #!/bin/zsh
-# Generated Jamf installation script for NTRS Restart Reminder.
+# Generated Jamf installation script for macOS Restart Reminder (MRR).
 # Controller and LaunchDaemon payloads are plain text and can be edited below.
 
 set -e
 
-SCRIPT_DEST="/usr/local/bin/ntrs-restart-reminder"
-PLIST_DEST="/Library/LaunchDaemons/com.ntrs.restartreminder.plist"
+SCRIPT_DEST="/usr/local/bin/mrr-restart-reminder"
+PLIST_DEST="/Library/LaunchDaemons/com.mrr.restartreminder.plist"
 LEGACY_SCRIPT_DEST="/usr/local/bin/dg-restart-reminder"
 LEGACY_PLIST_DEST="/Library/LaunchDaemons/com.dg.restartreminder.plist"
 
@@ -18,25 +18,25 @@ fi
 /bin/rm -f "$LEGACY_SCRIPT_DEST" "$LEGACY_PLIST_DEST"
 /bin/mkdir -p /usr/local/bin
 
-/bin/cat <<'NTRS_CONTROLLER' > "$SCRIPT_DEST"
+/bin/cat <<'MRR_CONTROLLER' > "$SCRIPT_DEST"
 #!/bin/zsh
 # Jamf + swiftDialog Restart Reminder
 # Runs as root from LaunchDaemon.
 # Configuration is delivered by Jamf Application & Custom Settings.
-# Preference domain: com.ntrs.restartreminder
+# Preference domain: com.mrr.restartreminder
 
 set -u
 
 PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
-PREF_DOMAIN="com.ntrs.restartreminder"
+PREF_DOMAIN="com.mrr.restartreminder"
 MANAGED_PLIST="/Library/Managed Preferences/${PREF_DOMAIN}.plist"
 LOCAL_PREF_PLIST="/Library/Preferences/${PREF_DOMAIN}.plist"
 
-STATE_DIR="/Library/Application Support/NTRSRestartReminder"
+STATE_DIR="/Library/Application Support/MRRRestartReminder"
 STATE_PLIST="${STATE_DIR}/state.plist"
 LEGACY_STATE_PLIST="/Library/Application Support/DGRestartReminder/state.plist"
 
-DEFAULT_LOG="/var/log/ntrs-restart-reminder.log"
+DEFAULT_LOG="/var/log/mrr-restart-reminder.log"
 DIALOG_CANDIDATES=(
   "/usr/local/bin/dialog"
   "/Library/Application Support/Dialog/Dialog.app/Contents/MacOS/Dialog"
@@ -176,7 +176,7 @@ clear_restart_logs() {
   local configured_log
   configured_log="$(get_log_file)"
   /bin/rm -f "$configured_log" "$DEFAULT_LOG" \
-    "/var/log/ntrs-restart-reminder-launchd.log"
+    "/var/log/mrr-restart-reminder-launchd.log"
 }
 
 force_quit_user_apps() {
@@ -508,23 +508,23 @@ else
 fi
 
 exit 0
-NTRS_CONTROLLER
+MRR_CONTROLLER
 
 /usr/sbin/chown root:wheel "$SCRIPT_DEST"
 /bin/chmod 755 "$SCRIPT_DEST"
 
-/bin/cat <<'NTRS_LAUNCHDAEMON' > "$PLIST_DEST"
+/bin/cat <<'MRR_LAUNCHDAEMON' > "$PLIST_DEST"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.ntrs.restartreminder</string>
+    <string>com.mrr.restartreminder</string>
 
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/ntrs-restart-reminder</string>
+        <string>/usr/local/bin/mrr-restart-reminder</string>
     </array>
 
     <key>RunAtLoad</key>
@@ -537,20 +537,20 @@ NTRS_CONTROLLER
     <string>Background</string>
 
     <key>StandardOutPath</key>
-    <string>/var/log/ntrs-restart-reminder-launchd.log</string>
+    <string>/var/log/mrr-restart-reminder-launchd.log</string>
 
     <key>StandardErrorPath</key>
-    <string>/var/log/ntrs-restart-reminder-launchd.log</string>
+    <string>/var/log/mrr-restart-reminder-launchd.log</string>
 </dict>
 </plist>
-NTRS_LAUNCHDAEMON
+MRR_LAUNCHDAEMON
 
 /usr/sbin/chown root:wheel "$PLIST_DEST"
 /bin/chmod 644 "$PLIST_DEST"
 
 /bin/launchctl bootout system "$PLIST_DEST" >/dev/null 2>&1 || true
 /bin/launchctl bootstrap system "$PLIST_DEST"
-/bin/launchctl enable system/com.ntrs.restartreminder
-/bin/launchctl kickstart -k system/com.ntrs.restartreminder
+/bin/launchctl enable system/com.mrr.restartreminder
+/bin/launchctl kickstart -k system/com.mrr.restartreminder
 
-echo "Installed com.ntrs.restartreminder"
+echo "Installed com.mrr.restartreminder"

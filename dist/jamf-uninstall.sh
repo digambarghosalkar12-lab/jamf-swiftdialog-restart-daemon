@@ -1,15 +1,15 @@
 #!/bin/zsh
-# Jamf-ready uninstaller for NTRS Restart Reminder.
+# Jamf-ready uninstaller for macOS Restart Reminder (MRR).
 
 set -e
 
-LABEL="com.ntrs.restartreminder"
-SCRIPT_PATH="/usr/local/bin/ntrs-restart-reminder"
+LABEL="com.mrr.restartreminder"
+SCRIPT_PATH="/usr/local/bin/mrr-restart-reminder"
 PLIST_PATH="/Library/LaunchDaemons/${LABEL}.plist"
-STATE_DIR="/Library/Application Support/NTRSRestartReminder"
+STATE_DIR="/Library/Application Support/MRRRestartReminder"
 LOCAL_PREFS="/Library/Preferences/${LABEL}.plist"
-LOG_PATH="/var/log/ntrs-restart-reminder.log"
-LAUNCHD_LOG_PATH="/var/log/ntrs-restart-reminder-launchd.log"
+LOG_PATH="/var/log/mrr-restart-reminder.log"
+LAUNCHD_LOG_PATH="/var/log/mrr-restart-reminder-launchd.log"
 
 LEGACY_LABEL="com.dg.restartreminder"
 LEGACY_SCRIPT_PATH="/usr/local/bin/dg-restart-reminder"

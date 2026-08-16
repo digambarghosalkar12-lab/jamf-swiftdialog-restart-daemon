@@ -4,11 +4,11 @@ A configuration-driven macOS restart reminder for Jamf Pro.
 
 ## Design
 
-- **LaunchDaemon:** `com.ntrs.restartreminder`
-- **Controller:** `/usr/local/bin/ntrs-restart-reminder`
-- **Jamf preference domain:** `com.ntrs.restartreminder`
-- **State:** `/Library/Application Support/NTRSRestartReminder/state.plist`
-- **Default log:** `/var/log/ntrs-restart-reminder.log`
+- **LaunchDaemon:** `com.mrr.restartreminder`
+- **Controller:** `/usr/local/bin/mrr-restart-reminder`
+- **Jamf preference domain:** `com.mrr.restartreminder`
+- **State:** `/Library/Application Support/MRRRestartReminder/state.plist`
+- **Default log:** `/var/log/mrr-restart-reminder.log`
 - **Check cadence:** every 5 minutes
 - **UI:** swiftDialog
 
@@ -78,13 +78,13 @@ Create:
 Preference domain:
 
 ```text
-com.ntrs.restartreminder
+com.mrr.restartreminder
 ```
 
 Paste the contents of:
 
 ```text
-jamf/com.ntrs.restartreminder.schema.json
+jamf/com.mrr.restartreminder.schema.json
 ```
 
 Jamf will expose the keys as editable controls.
@@ -213,13 +213,13 @@ managed preferences are controlled by MDM.
 Copy:
 
 ```text
-scripts/ntrs-restart-reminder.zsh
+scripts/mrr-restart-reminder.zsh
 ```
 
 to:
 
 ```text
-/usr/local/bin/ntrs-restart-reminder
+/usr/local/bin/mrr-restart-reminder
 ```
 
 Permissions:
@@ -231,13 +231,13 @@ root:wheel 755
 Copy:
 
 ```text
-launchdaemon/com.ntrs.restartreminder.plist
+launchdaemon/com.mrr.restartreminder.plist
 ```
 
 to:
 
 ```text
-/Library/LaunchDaemons/com.ntrs.restartreminder.plist
+/Library/LaunchDaemons/com.mrr.restartreminder.plist
 ```
 
 Permissions:
@@ -249,9 +249,9 @@ root:wheel 644
 Then:
 
 ```bash
-launchctl bootstrap system /Library/LaunchDaemons/com.ntrs.restartreminder.plist
-launchctl enable system/com.ntrs.restartreminder
-launchctl kickstart -k system/com.ntrs.restartreminder
+launchctl bootstrap system /Library/LaunchDaemons/com.mrr.restartreminder.plist
+launchctl enable system/com.mrr.restartreminder
+launchctl kickstart -k system/com.mrr.restartreminder
 ```
 
 ## Testing

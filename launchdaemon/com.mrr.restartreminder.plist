@@ -4,11 +4,11 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.ntrs.restartreminder</string>
+    <string>com.mrr.restartreminder</string>
 
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/ntrs-restart-reminder</string>
+        <string>/usr/local/bin/mrr-restart-reminder</string>
     </array>
 
     <key>RunAtLoad</key>
@@ -21,9 +21,9 @@
     <string>Background</string>
 
     <key>StandardOutPath</key>
-    <string>/var/log/ntrs-restart-reminder-launchd.log</string>
+    <string>/var/log/mrr-restart-reminder-launchd.log</string>
 
     <key>StandardErrorPath</key>
-    <string>/var/log/ntrs-restart-reminder-launchd.log</string>
+    <string>/var/log/mrr-restart-reminder-launchd.log</string>
 </dict>
 </plist>

@@ -5,12 +5,12 @@
 
 set -e
 
-SCRIPT_DEST="/usr/local/bin/ntrs-restart-reminder"
-PLIST_DEST="/Library/LaunchDaemons/com.ntrs.restartreminder.plist"
+SCRIPT_DEST="/usr/local/bin/mrr-restart-reminder"
+PLIST_DEST="/Library/LaunchDaemons/com.mrr.restartreminder.plist"
 
 echo "This helper intentionally does not embed the controller."
-echo "Deploy scripts/ntrs-restart-reminder.zsh to ${SCRIPT_DEST}"
-echo "Deploy launchdaemon/com.ntrs.restartreminder.plist to ${PLIST_DEST}"
+echo "Deploy scripts/mrr-restart-reminder.zsh to ${SCRIPT_DEST}"
+echo "Deploy launchdaemon/com.mrr.restartreminder.plist to ${PLIST_DEST}"
 echo "Set root:wheel / 755 for controller and root:wheel / 644 for plist."
 echo "Then bootstrap with:"
 echo "launchctl bootstrap system ${PLIST_DEST}"

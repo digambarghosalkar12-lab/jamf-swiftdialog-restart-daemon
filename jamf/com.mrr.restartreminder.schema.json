@@ -1,5 +1,5 @@
 {
-  "title": "NTRS Restart Reminder",
+  "title": "macOS Restart Reminder (MRR)",
   "description": "Managed settings for the macOS restart reminder LaunchDaemon and swiftDialog UI.",
   "properties": {
     "Enabled": {
@@ -182,7 +182,7 @@
       "description": "Absolute log filename directly under /var/log. Subdirectories and other locations are rejected for security.",
       "type": "string",
       "pattern": "^/var/log/[A-Za-z0-9._-]+$",
-      "default": "/var/log/ntrs-restart-reminder.log"
+      "default": "/var/log/mrr-restart-reminder.log"
     }
   }
 }

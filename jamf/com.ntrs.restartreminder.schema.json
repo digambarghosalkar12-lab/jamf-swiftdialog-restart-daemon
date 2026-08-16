@@ -70,8 +70,8 @@
       "default": 900
     },
     "RestartIntervalDays": {
-      "title": "Restart Interval (days)",
-      "description": "Show restart workflow after the Mac has been running this many full days.",
+      "title": "Restart Frequency (days)",
+      "description": "Show the restart workflow after the Mac has been running this many full days. The minimum is one day.",
       "type": "integer",
       "minimum": 1,
       "default": 7
@@ -95,12 +95,11 @@
       "type": "boolean",
       "default": true
     },
-    "MeetingDeferralMinutes": {
-      "title": "Active Meeting Deferral (minutes)",
-      "description": "Temporary deferral when an active meeting is detected.",
-      "type": "integer",
-      "minimum": 15,
-      "default": 60
+    "IgnoreMeetingDuringForceRestart": {
+      "title": "Ignore Meeting During Force Restart",
+      "description": "When enabled, the forced restart countdown proceeds even during an active meeting. When disabled, forced restart waits and checks again every five minutes until the meeting ends.",
+      "type": "boolean",
+      "default": false
     },
     "LogFileLocation": {
       "title": "Log File Location",

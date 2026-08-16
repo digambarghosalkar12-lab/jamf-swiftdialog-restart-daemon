@@ -9,7 +9,7 @@ A configuration-driven macOS restart reminder for Jamf Pro.
 - **Jamf preference domain:** `com.ntrs.restartreminder`
 - **State:** `/Library/Application Support/NTRSRestartReminder/state.plist`
 - **Default log:** `/var/log/ntrs-restart-reminder.log`
-- **Check cadence:** every 30 minutes
+- **Check cadence:** every 5 minutes
 - **UI:** swiftDialog
 
 Jamf controls the behavior; the local state file only tracks the current boot,
@@ -30,7 +30,7 @@ snoozes used, and next eligible prompt.
 11. Snooze count
 12. Snooze interval
 13. Active meeting check (DND/Focus is ignored)
-14. Meeting deferral interval
+14. Ignore meeting during force restart
 15. Log file location
 16. Enabled / disabled
 17. Persistent window
@@ -38,7 +38,7 @@ snoozes used, and next eligible prompt.
 ## User flow
 
 ```text
-LaunchDaemon wakes every 30 minutes
+LaunchDaemon wakes every 5 minutes
         |
         v
 Is Enabled = true?
@@ -152,8 +152,15 @@ assertion associated with that app. Simply leaving a meeting app open is not
 enough to trigger a deferral. Detection is deliberately fail-open because macOS
 does not provide a stable system meeting-status API.
 
-The final forced restart stage is not deferred once the configured snooze
-allowance has been exhausted.
+After the configured snooze allowance is exhausted, the forced restart stage
+still waits for an active meeting to end by default. Set
+`IgnoreMeetingDuringForceRestart = true` to show the forced countdown during a
+meeting. While waiting, the daemon checks again every five minutes.
+
+When the forced countdown ends—or the user selects **Restart Now** in the forced
+window—the controller tears down the logged-in user's GUI session, force-quits
+remaining user applications, clears its logs, and restarts the Mac. Unsaved work
+in open applications will be lost at this stage.
 
 For organizations that require authoritative meeting-state detection, use a
 separate user-context LaunchAgent or an approved calendar integration and pass
@@ -162,8 +169,9 @@ the result to this controller.
 ## Installation
 
 `install.sh` is self-contained and generates both the controller and LaunchDaemon
-from embedded payloads. Run it as root; the `scripts/` and `launchdaemon/` source
-directories do not need to be copied to the target Mac.
+from readable, unencoded `cat` heredocs. Jamf administrators can edit those
+embedded sections directly. Run it as root; the `scripts/` and `launchdaemon/`
+source directories do not need to be copied to the target Mac.
 
 ```bash
 sudo ./install.sh

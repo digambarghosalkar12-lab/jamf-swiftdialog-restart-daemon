@@ -68,7 +68,8 @@ bool_pref() {
   local fallback="$2"
   local value
   value="$(read_pref "$key" "$fallback")"
-  case "${value:l}" in
+  value="$(printf '%s' "$value" | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/tr -d '[:space:]')"
+  case "$value" in
     true|1|yes|on) echo "true" ;;
     *) echo "false" ;;
   esac
@@ -132,6 +133,24 @@ log() {
   logfile="$(get_log_file)"
   mkdir -p "$(dirname "$logfile")" 2>/dev/null || true
   printf '%s %s\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$logfile"
+}
+
+clear_restart_logs() {
+  local configured_log
+  configured_log="$(get_log_file)"
+  /bin/rm -f "$configured_log" "$DEFAULT_LOG" \
+    "/var/log/ntrs-restart-reminder-launchd.log"
+}
+
+force_quit_user_apps() {
+  local uid="$1"
+
+  # Tear down the user's launchd GUI domain so open applications cannot block
+  # the configured forced restart. Fall back to killing that user's processes
+  # if the GUI domain cannot be booted out.
+  if ! /bin/launchctl bootout "gui/${uid}" >/dev/null 2>&1; then
+    /usr/bin/pkill -KILL -u "$uid" >/dev/null 2>&1 || true
+  fi
 }
 
 find_dialog() {
@@ -300,7 +319,6 @@ show_force_dialog() {
     --button1text "$(read_pref "ButtonName" "Restart Now")"
     --timer "$timer"
     --ontop
-    --blurscreen
     --quitkey "k"
   )
 
@@ -314,7 +332,9 @@ show_force_dialog() {
   # swiftDialog: 0 is Button 1 and 4 is timer expiry. Never restart after an
   # unexpected UI failure; log it and allow launchd to try again next cycle.
   if [[ "$rc" -eq 0 || "$rc" -eq 4 ]]; then
-    log "Final dialog ended with expected exit code ${rc}. Restarting device."
+    log "Final dialog ended with expected exit code ${rc}. Force-quitting user applications and restarting device."
+    force_quit_user_apps "$uid"
+    clear_restart_logs
     /sbin/shutdown -r now
   else
     log "Final dialog ended unexpectedly with exit code ${rc}; restart cancelled for safety."
@@ -380,14 +400,16 @@ fi
 snooze_used="$(state_read "SnoozeCount" "0")"
 snooze_max="$(integer_pref "SnoozeCount" "3" "0")"
 
-if (( snooze_used < snooze_max )); then
-  if meeting_active "$user"; then
-    # Avoid hammering every LaunchDaemon cycle during a call.
-    deferral_minutes="$(integer_pref "MeetingDeferralMinutes" "60" "15")"
-    state_write "NextPromptEpoch" integer "$(( now + deferral_minutes * 60 ))"
+if meeting_active "$user"; then
+  if (( snooze_used < snooze_max )) || \
+      [[ "$(bool_pref "IgnoreMeetingDuringForceRestart" "false")" != "true" ]]; then
+    log "Active meeting detected; waiting until the next 5-minute launchd check."
     exit 0
   fi
+  log "Active meeting detected, but IgnoreMeetingDuringForceRestart is enabled; continuing forced restart."
+fi
 
+if (( snooze_used < snooze_max )); then
   log "Showing restart reminder to ${user}; uptime=${uptime_days}d; snoozes=${snooze_used}/${snooze_max}."
 
   dialog_failures=0
@@ -399,6 +421,7 @@ if (( snooze_used < snooze_max )); then
     # 0 = Button 1, 2 = Button 2, 10 = Cmd+Q.
     if [[ "$rc" -eq 0 ]]; then
       log "User selected Restart Now."
+      clear_restart_logs
       /sbin/shutdown -r now
       break
     elif [[ "$rc" -eq 2 ]]; then

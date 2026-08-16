@@ -17,18 +17,500 @@ fi
 
 /bin/mkdir -p /usr/local/bin
 
-# Embedded gzip/base64 payloads keep this installer self-contained for Jamf.
-# cat writes each payload to the system decoder; no companion project files are
-# required on the target Mac.
-/bin/cat <<'NTRS_SCRIPT_PAYLOAD' | /usr/bin/base64 -D | /usr/bin/gzip -dc > "$SCRIPT_DEST"
-H4sICNAlemoAA250cnMtcmVzdGFydC1yZW1pbmRlci56c2gAvVptc9s2Ev6uX4EwcizFkWQ7aXq1T2kVy0l8Yzs+25lOL0k1FAlJGJMES5CWFdv97be7AEmQkpI0zTTTWhJeFovF7rPPgnz4oDcWUe+TmjUesv+44YRtMTUXk3Qo3EBO2TlXqZuk8BmKyOcJjDrPIsVcxRIpUzZJZMiO3SzyZkOXhzLqwogDGU3ENEvcVMiICcV8HohrnnCfjRd6lUEcB8LTAx6xg0ylIOeCp6mIpgplnCV8AjMijzNfhq6I9pgnw26UJqqbaKWSXKeG4inrZI3G2eDyTd/pZSrBXe3pP/hL0TdV/A6k5wbY7TTOzg9fjYZvTwZHp31n3RJO42RwOnh9OBydHR9dXMIax2KcuMmid+JG7hQ2Vuqres1bS+h9F3aqUqdx/PZgcDyinrqQL09uXFwOLg9Hw6Nza5ptxIssjmWS9k4vzy/MoZ0XyuvJZtXmbSHrvgcDU15oePh6cPDbqDL6s4sNX9eWqsprDA9fDd4dX46O374GSdcuGn7aQwN3jIE7uYW70OM0hkcDGDs6GJwOj4agxUW/1WDMqZ5ZzyffdKjns+rROPPRdeO4B56Z8ihVcGze2wvT4zTajUZ45YuEdWLmNAvzOA1vFkqf/fjDD9Vm7Z+KJ9fgnXh0iRsw2jqbz3jEsniauD64so6PdMbZRCYhT9jwdSdwxzwIwGUgIpTAiBET9v49e8A6k2IZsr7DHj3Sjcsn47CPH/dRcgRmIKt48ZqBVZk4PA+JnjeT84gieQ8U58GKsXoYmuH5s2f1/olAW3Q+9w/63/Aghr1+cWQj1ME0Iv9ptdktKKCNQ1aoxGDFAIxx2MrSEOgB5CkF1ENwtYylUSRGcWsMNsHe7xuNhLugL8SvUZe8lF3xBQTajlM0TNwgGLveFbTulq20T/hFn9DVqhigDY5W7D8CxXRYVXXWgq7dINP60bd+s6VDRoz5Dfd6ZzjxZeb7C9bxmHOWiChle81bUPPeKQXvvuj5/LoXZUHA7u5YmmS8TUItHUh+TYfCcrrTtCU8zZKIbdNPMBb9aRRjc4s4aMWxlME3WzHfvN46WLE4E1gGZDj2am2c57mKQ+MtzdgLwAZC7wS3fLdzt+DqTkZtoyo2Omx/n0Y8zltBosqbuXI93AaYlU958s07ASgUYRZC49Nv317hM8Vh9f9km7+/3+789HGruQlHh7DSammB7EU/X5a128vBUBxpEQFIC5yjCDqEz7QPGVGbxqL3m/ssUwh/zdtcs/uuY4stTz8PJILPEe7tr1nOCu918PidoqQifm2sLAUKWvu2as79Ijj22X3DRMequNBGmSci5Z+3SrqI+Yqo0J5UWGlViqnYKadOvTjIUhGAHeBAIKvdhMHOcm6AQFqXGPJg/5yBhzzgIHudhS0D7754tJNb+QtCB76fSwTvQ7Pgp3bLLy2BFp/ydAQePpqIoGpyz5Ba7iOAFD9qAXksp69g5rHUVARXtEiQCc+H7HIGrDhOJBA+INIWoe4S406ElzKTCyjefGgUEYlULJXMZUqEccBJGKoauSFQEZFwLw0WbMwjOLYZyykXTgH9roH6MDcZixQpE7SIa5iKa5CHAe8uoaPcocGPgr69H3T+53Y+AZx0Rx2DKMu4Yc1fTp8VmxQIAMIrFoffuDX6Td/Q1vb5EJZbxK0F38gQTtPMAIOvilRMuRjdE7a5odiG+hBt4nRNLtHfN7c2futshJ0Nn2282ds42du42GzjYT4Gp3lhyUe9J0BgR5qTVvSPcWcyYTFkF8w2S+T2/S8f7wELfFkAxw0m4yXQiJcAw5cRbsI0kuOCwZUM+CgDWmrUKKIZYYRCf+MicxiZwwy3rVORIqowjFJzxCnEAv53MtAPO526JPDqkatsdYwk4eeC1AwKzZxjBlREgvtCKOAklCvA+cpNZL6k9R7qDqf5C5k/cFU6AgKRjngsvZm9d+K4aqFQKoDyFU+iLo5MBTjJXRXx3PkV67zafM+e3H/c2mSbt+QhrPnsfhNX8d2FGkFO8zitVdkSNrBIzqEBv6Kb1pQiT4UR/YqXbW0o6qBjbkJGbsEQ1iEhbdZj/3r+bHsbsjKuH3KOtfHI9VIopdecTYPp4G0VfIo5BzPuXQ1Ph2+TEy3CMYwG/PlBP2c32uMKfyJcGUpQOQXnhQIHEMdoAJ8JJ4zxXFiZuRGDygqrfBnzCPHrjwxwCDYBAOSSIKXrMcAZRAUqdFFQjn8YI1gi5S5Jp+9GPomm7YIOcZaSLDfzhWQ8moqIdzWO4n9U1gE6QvJcAEUQQQe12UM4C7HUY/wmloor2BHId8cGOklaR0vTBdwTUiWvSrWO3McVVAowz+TEVHxU3UkE1aRbhrzeEqxDkkdaMqI77InQm6DHDCq8IVas495IfZJPPBmG/SduMlX9lTTDsJ4HBTzk8hx2V/PnawZFNkBmPw/STXL65g7r900XnnsqAzmHOG1ut9mfrNcKhZdIJScpgz2H6i5U+vOTlOGHbqbu5hyS793E9TiGUrsHWDWRWeT3dwieGDs8HSJ+3YiUPaAeat+08kThazlVqFiMTFOEsAA7T1knwQx/9HaAAw/1mXWCz5nIGKgieclI2iQvD18fnYLK5xd958OH6P0d+/gYwfno9enb88ODwcVhsbdeRYUL9Jr3v3+IPj7us50emrPXIn+989wY9vht5iGWPdDeX4kaDDYMDjqjeAaJQEcHuGUK2R+CDOOpeYvnfb9vOSvEspiYKxJDxq0STZ/Bw5p5IbTcsULaICOmJKAm3rNAqIhAgFY9HVvgsOOcnXSZgRkdXzG4NvqzjCAuZzKAoGYx+loZEmw+g0wK7RBAAQPdFZBODsvN3ERrQFZ4oqGEggTMBAkNKBPwIA56+EhnlJhC+DN3koJ0oh9JiPvGeEajjXkgoynRJ2giaTbiYBCXYVr4H4VnSBeMU6v/a7yuGLzG5f5+1D16ZGrtuihD9nBfwg/4XSQ7vlBx4C46KuA8vtM27v5MRr4z0H6HJ/B9vbV+1t/DSW3Wg7dw6UiXSWIC5SPmTl7lLl6WgDo6HRMNFjJT9AuZvNW5LnFX5uCgslZlzktoO8ShkFe3a/W3LVxn22ZFVq36sqq9ilxzrVAXuDznIpLyEz+AI0qtWdsrRp7ym/QskWG8tIYZTSd6yuea3OTH1i0eCBQZUl970jl0Sy6v6fBIh/4Ic1nlSBA82NiNIp6gueBXrY468qh4unjVd5NEzrsezLuaC8W7nki8gHeBfQf6MkeLqc1/SY0gwZyIXpZyaqvdKKt0Qeto9oO9W/1Wp0PamT578NgIrQ3XzSKEaq0c1C4r+tvWH20cTHSfqvqZnKPPIm6trBx0U7XC17x519pNKlLArhBSP648ztIUn7ZULEtDaqY50RMusQsMVD7hId7ma6MaqaunwqzfZJawE9djM0DhMcI18P3IcCIAZWBFuA8gzV12FnC8bzM3/oi/VwBBDNAEwBvyI6Uz4JQCaVnXHCrtpn6o1HgKFZ6l96mc6yn/mBcpijKsbPz8e+jeYD1TdtRRohKZGieYNRmH25eH9QlPLXCxXZlC1WmWD0QY63S0XzhN+swbczdxmuZb3qEtvZMCIKD30i/sa2s+cIYPKRSy618h3qE8EZjQozSR9AzDPM/r0thf8dkHj/AYfUq7Wi+EiAUSCQnZAaoCAI05yVJPUBrWGCF04TSd5In7e57wYVXY6jnhfe9QAZ/ixAYwASM5gOSFEIQZPRHTqU7iOfjaRVB9F05+fwtFUN8qgiwwLsIbNitjMNQM9IFE5WZBesUXYwlra13a9gVHMS3fUrvIW/8A5ujtQyVp++i/LUer3vFW/JmeS+lMYTXUIkK7ZSUQdZP2aGv/2pN2jV/ZIp3SJNYlQV7vA16WYFkk++bPBXACwEAR/p1Q04JLhqRqHWi+wkUN5GgXWoefJSCtxtBlSSWqUjmLqBpmKs0Bs8suXAicBSLuXCZXeI+AlS8yrRCIP4UTsNAcX90slSEQKI9qYXoeqatrgBKfHvdx15tBUfqJJ7K7FjuX9SzRlN94gRsSSQvd5KoL0edG07+Ip0wbfBn6CPSGoOkl9sPon7a34e/zfwQAvz7f6JVC8lz6zBsJMHLhQZZorm0awEkQPphzVYDsP4MLROiGugigPC2wWqJg8gvfMYA9F+kMb89xV/eqdB0ieF+OWX1AideHqNVVW/lGyR7bRtDXpmU7hPXPsEWbkt/EIll02SkyiNKlqaZzIxKWRTBIFxHvjuiuBzjEPu0PKAXljgCqIaYvFH2dHRbMnboiYhGesrfA3G+lisRzWIf/AapBKVf+fFZ/iAQWfEVmM3biwIB9ba1CJyqTPOlzMGDi3ReMGW0OFaPwuKlrzO3kLNNR2UnMFWL1QduK9UoDYHzrxStr7heG89zI0y8bEC1zJzxdVMuqnYKyKwAFPwv4SGN1BVrtdILBmly7wWgGiITpe05W/Xb+Q+ObtaS1Bb7RRof/igKnaU3U9VdFxXXk6siMeoODQKtn8P+OwZi1d7W4VVIW973FWjVrPGZPn29DEb6s+vqKq4kynTxE32Fc6Q1BuaU1hWO1tgjnS24MjHkqgGHghSKIZVSwwlDsxMet91/zbsYJRMWXX8xYxakONdFbc51cxA355ja9KbKmWKcOdNdRYUwsHJaPzURSfm5DGASr/1gcWxYjiBSTa1f2MEJzI2sYcKOVa9s0ydqAuWlv2c9atFiE5U/FoxBCEf0V2WVCpX6tEQ5bRHPDRmt9o3AMlspi3WIZU1flUju4uRvHQWXEl3X5lYhjcCGntgUiRC3rOU++cm0jiOv1ld/RkSOi4oUAXq9xwOChfZlTrrdD6xWkrGU9JrNuzKwlTRJfWtV+HxEf+WYpaYF1A91G1ZdcE7sYFiMdKnV0WopNjVDaXTDQ/82s2Wuc46+h37fUfl9P7fGxR+WBUX7IVjp7yAbXEo5/5oaQeTE9Yc5dVN7m1KmS+Rn16yvaLs3OX3sbgRMAB10RreYeeGgGnuhxmshBxP6Qs6ivRckCc+tLA+g+x8dk5gUTfSJ5hUEedAF1A25gKUjAk4tLSA0Lffhd4sO9v28srPpVDO4VP8H06PWwlrn0MpRE9VELfbmNzl486F11/WO5v449naNzClUjUSDJy0KoZm2+ofbMwG3WL/jVE7Zb/tp9wnaw8yD0t/6rj3GZAdXe7LJyEg80w7GYcDd/2WsdmcF/YwiCK302QX293fp6NRbyGRF/s75fPi70sFpbSUOMsVYMedFnT6tldWG3Uq2cweEsjq9N1aTcE/9V+2wqrtFTsxhoHr6Bg6UbZfuczmry6hQLGeDTP+hFohXLm7sbczezX/BJmLuSUFb5Kz5KBaXKw6azxucIbNc04ZUQRKN5ySNnsOiNpzLqxKUdQpSc4ltFCri6vg3yhQoF1GSBeaRDJ9/9SoegLdP7EGbZh+wtvjVuwpbuifjNzIWKGrk6vk5OqYNQhDJX+ZjZYOYeSUnNs2XzaNq8zVKvmODvlHRduptYDmlEJANP/weMZzaneC8AAA==
-NTRS_SCRIPT_PAYLOAD
+
+# Embedded plain-text payloads keep this Jamf installer self-contained.
+# Edit the controller directly inside this heredoc when customization is needed.
+/bin/cat <<'NTRS_SCRIPT' > "$SCRIPT_DEST"
+#!/bin/zsh
+# Jamf + swiftDialog Restart Reminder
+# Runs as root from LaunchDaemon.
+# Configuration is delivered by Jamf Application & Custom Settings.
+# Preference domain: com.ntrs.restartreminder
+
+set -u
+
+PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+PREF_DOMAIN="com.ntrs.restartreminder"
+MANAGED_PLIST="/Library/Managed Preferences/${PREF_DOMAIN}.plist"
+LOCAL_PREF_PLIST="/Library/Preferences/${PREF_DOMAIN}.plist"
+
+STATE_DIR="/Library/Application Support/NTRSRestartReminder"
+STATE_PLIST="${STATE_DIR}/state.plist"
+LEGACY_STATE_PLIST="/Library/Application Support/DGRestartReminder/state.plist"
+
+DEFAULT_LOG="/var/log/ntrs-restart-reminder.log"
+DIALOG_CANDIDATES=(
+  "/usr/local/bin/dialog"
+  "/Library/Application Support/Dialog/Dialog.app/Contents/MacOS/Dialog"
+)
+
+mkdir -p "$STATE_DIR"
+chmod 755 "$STATE_DIR"
+
+# Preserve deferral state when upgrading from the former DG-labelled version.
+if [[ ! -f "$STATE_PLIST" && -f "$LEGACY_STATE_PLIST" ]]; then
+  /bin/cp "$LEGACY_STATE_PLIST" "$STATE_PLIST"
+  /usr/sbin/chown root:wheel "$STATE_PLIST"
+  /bin/chmod 644 "$STATE_PLIST"
+fi
+
+# -----------------------------
+# Helpers
+# -----------------------------
+
+managed_plist() {
+  if [[ -f "$MANAGED_PLIST" ]]; then
+    echo "$MANAGED_PLIST"
+  elif [[ -f "$LOCAL_PREF_PLIST" ]]; then
+    echo "$LOCAL_PREF_PLIST"
+  else
+    echo ""
+  fi
+}
+
+read_pref() {
+  local key="$1"
+  local fallback="$2"
+  local plist
+  plist="$(managed_plist)"
+
+  if [[ -n "$plist" ]]; then
+    local value
+    value=$(/usr/libexec/PlistBuddy -c "Print :${key}" "$plist" 2>/dev/null || true)
+    if [[ -n "$value" ]]; then
+      echo "$value"
+      return 0
+    fi
+  fi
+
+  echo "$fallback"
+}
+
+bool_pref() {
+  local key="$1"
+  local fallback="$2"
+  local value
+  value="$(read_pref "$key" "$fallback")"
+  value="$(printf '%s' "$value" | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/tr -d '[:space:]')"
+  case "$value" in
+    true|1|yes|on) echo "true" ;;
+    *) echo "false" ;;
+  esac
+}
+
+integer_pref() {
+  local key="$1"
+  local fallback="$2"
+  local minimum="$3"
+  local value
+  value="$(read_pref "$key" "$fallback")"
+
+  if [[ "$value" =~ '^[0-9]+$' ]] && (( value >= minimum )); then
+    echo "$value"
+  else
+    log "Invalid ${key} value '${value}'; using ${fallback}."
+    echo "$fallback"
+  fi
+}
+
+state_read() {
+  local key="$1"
+  local fallback="$2"
+  if [[ -f "$STATE_PLIST" ]]; then
+    local value
+    value=$(/usr/libexec/PlistBuddy -c "Print :${key}" "$STATE_PLIST" 2>/dev/null || true)
+    [[ -n "$value" ]] && { echo "$value"; return 0; }
+  fi
+  echo "$fallback"
+}
+
+state_write() {
+  local key="$1"
+  local type="$2"
+  local value="$3"
+
+  if [[ ! -f "$STATE_PLIST" ]]; then
+    /usr/bin/plutil -create xml1 "$STATE_PLIST"
+    chmod 644 "$STATE_PLIST"
+  fi
+
+  /usr/libexec/PlistBuddy -c "Delete :${key}" "$STATE_PLIST" >/dev/null 2>&1 || true
+  /usr/libexec/PlistBuddy -c "Add :${key} ${type} ${value}" "$STATE_PLIST" >/dev/null 2>&1
+}
+
+get_log_file() {
+  local configured
+  configured="$(read_pref "LogFileLocation" "$DEFAULT_LOG")"
+
+  # This process runs as root. Restrict managed log destinations to a simple
+  # filename directly beneath /var/log to prevent arbitrary privileged writes.
+  if [[ "$configured" =~ '^/var/log/[A-Za-z0-9._-]+$' ]]; then
+    echo "$configured"
+  else
+    echo "$DEFAULT_LOG"
+  fi
+}
+
+log() {
+  local logfile
+  logfile="$(get_log_file)"
+  mkdir -p "$(dirname "$logfile")" 2>/dev/null || true
+  printf '%s %s\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$logfile"
+}
+
+clear_restart_logs() {
+  local configured_log
+  configured_log="$(get_log_file)"
+  /bin/rm -f "$configured_log" "$DEFAULT_LOG" \
+    "/var/log/ntrs-restart-reminder-launchd.log"
+}
+
+force_quit_user_apps() {
+  local uid="$1"
+
+  # Tear down the user's launchd GUI domain so open applications cannot block
+  # the configured forced restart. Fall back to killing that user's processes
+  # if the GUI domain cannot be booted out.
+  if ! /bin/launchctl bootout "gui/${uid}" >/dev/null 2>&1; then
+    /usr/bin/pkill -KILL -u "$uid" >/dev/null 2>&1 || true
+  fi
+}
+
+find_dialog() {
+  local p
+  for p in "${DIALOG_CANDIDATES[@]}"; do
+    [[ -x "$p" ]] && { echo "$p"; return 0; }
+  done
+  return 1
+}
+
+console_user() {
+  /usr/bin/stat -f "%Su" /dev/console 2>/dev/null
+}
+
+console_uid() {
+  local user="$1"
+  /usr/bin/id -u "$user" 2>/dev/null
+}
+
+run_as_user() {
+  local uid="$1"
+  shift
+  /bin/launchctl asuser "$uid" /usr/bin/sudo -u "#$uid" "$@"
+}
+
+last_boot_epoch() {
+  /usr/sbin/sysctl -n kern.boottime |
+    /usr/bin/awk -F'[ ,}]+' '{print $4}'
+}
+
+days_since_boot() {
+  local boot now
+  boot="$(last_boot_epoch)"
+  now="$(/bin/date +%s)"
+  echo $(( (now - boot) / 86400 ))
+}
+
+meeting_active() {
+  local user="$1"
+
+  [[ "$(bool_pref "CheckDNDOrMeeting" "true")" != "true" ]] && return 1
+
+  # Do not infer a meeting merely because an app is open. Require both a
+  # supported conferencing process for the console user and an active input
+  # audio engine. This is intentionally fail-open: if macOS exposes no usable
+  # audio-engine state, the reminder proceeds instead of deferring forever.
+  local processes audio_engines assertions
+  processes="$(/bin/ps -axo user=,comm=,args= 2>/dev/null || true)"
+  if ! echo "$processes" | /usr/bin/awk -v target="$user" '
+    $1 == target && tolower($0) ~ /(microsoft teams|msteams|zoom\.us|webex|facetime)/ { found=1 }
+    END { exit !found }
+  '; then
+    return 1
+  fi
+
+  audio_engines="$(/usr/sbin/ioreg -r -c IOAudioEngine -l 2>/dev/null || true)"
+  if echo "$audio_engines" | /usr/bin/awk '
+    BEGIN { RS="\\n[| ]*}"; IGNORECASE=1 }
+    /IOAudioEngineState[^\n]*= 1/ && /(input|capture)/ { found=1 }
+    END { exit !found }
+  '; then
+    log "Active conferencing app and microphone input detected for ${user}; deferring notification."
+    return 0
+  fi
+
+  # IOAudioEngine is absent on some Apple silicon/macOS combinations. Meeting
+  # apps commonly hold a power assertion while a call or screen share is active,
+  # so use that as a secondary signal after confirming the app belongs to the
+  # console user.
+  assertions="$(/usr/bin/pmset -g assertions 2>/dev/null || true)"
+  if echo "$assertions" | /usr/bin/awk '
+    tolower($0) ~ /(microsoft teams|msteams|zoom\.us|webex|facetime)/ &&
+      tolower($0) ~ /(preventuseridle|no-display-sleep|screen.?share|meeting|call)/ { found=1 }
+    END { exit !found }
+  '; then
+    log "Active conferencing power assertion detected for ${user}; deferring notification."
+    return 0
+  fi
+
+  return 1
+}
+
+reset_state_if_rebooted() {
+  local current_boot previous_boot
+  current_boot="$(last_boot_epoch)"
+  previous_boot="$(state_read "BootEpoch" "0")"
+
+  if [[ "$current_boot" != "$previous_boot" ]]; then
+    state_write "BootEpoch" integer "$current_boot"
+    state_write "SnoozeCount" integer "0"
+    state_write "NextPromptEpoch" integer "0"
+    log "New boot detected. Restart reminder state reset."
+  fi
+}
+
+dialog_common_args() {
+  local icon banner
+  icon="$(read_pref "Icon" "SF=arrow.clockwise.circle.fill")"
+  banner="$(read_pref "Banner" "")"
+
+  local args=()
+  [[ -n "$icon" ]] && args+=(--icon "$icon")
+  [[ -n "$banner" ]] && args+=(--bannerimage "$banner")
+  echo "${(q)args[@]}"
+}
+
+show_standard_dialog() {
+  local dialog="$1"
+  local uid="$2"
+
+  local title message button icon banner
+  title="$(read_pref "MessageTitle" "Restart Required")"
+  message="$(read_pref "Message" "Your Mac has been running for several days. Please restart to keep it secure and reliable.")"
+  button="$(read_pref "ButtonName" "Restart Now")"
+  icon="$(read_pref "Icon" "SF=arrow.clockwise.circle.fill")"
+  banner="$(read_pref "Banner" "")"
+
+  local snooze_used snooze_max
+  snooze_used="$(state_read "SnoozeCount" "0")"
+  snooze_max="$(integer_pref "SnoozeCount" "3" "0")"
+
+  local args=(
+    "$dialog"
+    --title "$title"
+    --message "$message"
+    --button1text "$button"
+  )
+
+  # PersistentWindow is controlled by Jamf.
+  # When enabled the dialog stays above other windows, is not moveable,
+  # and accidental Return/Escape actions are harder to trigger.
+  if [[ "$(bool_pref "PersistentWindow" "false")" == "true" ]]; then
+    args+=(--ontop --hidedefaultkeyboardaction)
+  else
+    args+=(--moveable)
+  fi
+
+  [[ -n "$icon" ]] && args+=(--icon "$icon")
+  [[ -n "$banner" ]] && args+=(--bannerimage "$banner")
+
+  if (( snooze_used < snooze_max )); then
+    local snooze_label
+    snooze_label="$(read_pref "SnoozeButtonName" "Snooze")"
+    args+=(--button2text "$snooze_label")
+  fi
+
+  run_as_user "$uid" "${args[@]}"
+  return $?
+}
+
+show_force_dialog() {
+  local dialog="$1"
+  local uid="$2"
+
+  local title message icon banner timer
+  title="$(read_pref "ForceRestartWindowTitle" "Restart Required Now")"
+  message="$(read_pref "ForceRestartWindowMessage" "This Mac must restart. Save your work now. The computer will restart automatically when the countdown reaches zero.")"
+  icon="$(read_pref "ForceRestartWindowIcon" "SF=exclamationmark.triangle.fill")"
+  banner="$(read_pref "Banner" "")"
+  timer="$(integer_pref "CountDownTimer" "900" "60")"
+
+  local args=(
+    "$dialog"
+    --title "$title"
+    --message "$message"
+    --button1text "$(read_pref "ButtonName" "Restart Now")"
+    --timer "$timer"
+    --ontop
+    --quitkey "k"
+  )
+
+  [[ -n "$icon" ]] && args+=(--icon "$icon")
+  [[ -n "$banner" ]] && args+=(--bannerimage "$banner")
+
+  log "Displaying final forced restart dialog with ${timer}s countdown."
+  run_as_user "$uid" "${args[@]}"
+  local rc=$?
+
+  # swiftDialog: 0 is Button 1 and 4 is timer expiry. Never restart after an
+  # unexpected UI failure; log it and allow launchd to try again next cycle.
+  if [[ "$rc" -eq 0 || "$rc" -eq 4 ]]; then
+    log "Final dialog ended with expected exit code ${rc}. Force-quitting user applications and restarting device."
+    force_quit_user_apps "$uid"
+    clear_restart_logs
+    /sbin/shutdown -r now
+  else
+    log "Final dialog ended unexpectedly with exit code ${rc}; restart cancelled for safety."
+    return 1
+  fi
+}
+
+schedule_snooze() {
+  local snooze_used interval_hours now next
+  snooze_used="$(state_read "SnoozeCount" "0")"
+  snooze_used=$(( snooze_used + 1 ))
+  state_write "SnoozeCount" integer "$snooze_used"
+
+  interval_hours="$(integer_pref "SnoozeIntervalHours" "4" "1")"
+
+  now="$(/bin/date +%s)"
+  next=$(( now + (interval_hours * 3600) ))
+  state_write "NextPromptEpoch" integer "$next"
+  log "User snoozed. Snooze ${snooze_used}; next eligible prompt epoch ${next}."
+}
+
+# -----------------------------
+# Main
+# -----------------------------
+
+if [[ "$(bool_pref "Enabled" "true")" != "true" ]]; then
+  exit 0
+fi
+
+reset_state_if_rebooted
+
+restart_interval_days="$(integer_pref "RestartIntervalDays" "7" "1")"
+
+uptime_days="$(days_since_boot)"
+if (( uptime_days < restart_interval_days )); then
+  exit 0
+fi
+
+user="$(console_user)"
+if [[ -z "$user" || "$user" == "root" || "$user" == "loginwindow" || "$user" == "_mbsetupuser" ]]; then
+  log "No interactive user; restart reminder skipped."
+  exit 0
+fi
+
+uid="$(console_uid "$user")"
+if [[ -z "$uid" ]]; then
+  log "Unable to determine UID for ${user}."
+  exit 1
+fi
+
+dialog="$(find_dialog || true)"
+if [[ -z "$dialog" ]]; then
+  log "swiftDialog executable not found."
+  exit 1
+fi
+
+now="$(/bin/date +%s)"
+next_prompt="$(state_read "NextPromptEpoch" "0")"
+if (( now < next_prompt )); then
+  exit 0
+fi
+
+snooze_used="$(state_read "SnoozeCount" "0")"
+snooze_max="$(integer_pref "SnoozeCount" "3" "0")"
+
+if meeting_active "$user"; then
+  if (( snooze_used < snooze_max )) || \
+      [[ "$(bool_pref "IgnoreMeetingDuringForceRestart" "false")" != "true" ]]; then
+    log "Active meeting detected; waiting until the next 5-minute launchd check."
+    exit 0
+  fi
+  log "Active meeting detected, but IgnoreMeetingDuringForceRestart is enabled; continuing forced restart."
+fi
+
+if (( snooze_used < snooze_max )); then
+  log "Showing restart reminder to ${user}; uptime=${uptime_days}d; snoozes=${snooze_used}/${snooze_max}."
+
+  dialog_failures=0
+  while true; do
+    show_standard_dialog "$dialog" "$uid"
+    rc=$?
+
+    # swiftDialog documented exit codes:
+    # 0 = Button 1, 2 = Button 2, 10 = Cmd+Q.
+    if [[ "$rc" -eq 0 ]]; then
+      log "User selected Restart Now."
+      clear_restart_logs
+      /sbin/shutdown -r now
+      break
+    elif [[ "$rc" -eq 2 ]]; then
+      schedule_snooze
+      break
+    elif [[ "$(bool_pref "PersistentWindow" "false")" == "true" ]]; then
+      dialog_failures=$(( dialog_failures + 1 ))
+      if (( dialog_failures >= 3 )); then
+        log "Persistent dialog failed ${dialog_failures} times; giving up until the next launchd cycle."
+        exit 1
+      fi
+      log "PersistentWindow enabled; dialog exited unexpectedly with code ${rc}. Reopening."
+      /bin/sleep 2
+      continue
+    else
+      # Non-persistent mode treats another dismissal as a snooze.
+      schedule_snooze
+      break
+    fi
+  done
+else
+  # Once snoozes are exhausted we do not defer for an active meeting:
+  # this is the configured forced restart stage.
+  show_force_dialog "$dialog" "$uid"
+fi
+
+exit 0
+NTRS_SCRIPT
+
 /usr/sbin/chown root:wheel "$SCRIPT_DEST"
 /bin/chmod 755 "$SCRIPT_DEST"
 
-/bin/cat <<'NTRS_PLIST_PAYLOAD' | /usr/bin/base64 -D | /usr/bin/gzip -dc > "$PLIST_DEST"
-H4sICNYkemoAA2NvbS5udHJzLnJlc3RhcnRyZW1pbmRlci5wbGlzdACtkk1vwjAMhu/9FVnvreGGplDE1ySkalSjHHYMTVQq2qRyXBj/fil0omjVTrvZ1uvntS3z2VdVsrNCWxg99cfhyGdKZ0YWOp/6+/QtmPizyOMvq+0y/UzWrC4LSyzZL+LNkvkBwLyuSwWwSlcsiTe7lDkGwPrd9xjzj0T1K8DlcglFqwszU7VSCwmaWiFdY4cLXEsoSfrO6M5/GshVZZFR5ICM8ZO6RrE4qJJDG96LltANHDl6qAltiMqSQEJVFVoq5NAJvAfDDZCjqOaYN5XSZPs4gSi6uI+HxiKUJhMlHAoNrVPQOQW/rW6d0KEevh+NnlNshOwbEjYK+qpdC91oUngWT5sWrpYrjMaT0YjDT/a8V6asTa+1GrjQQmSnHE2j5dBNnKuWAuW2oUTQcaAfzqI9QT68fFCKRmdHGTrFX/w1osF/dOBwfxAOt/eJvG8LS6zb1wIAAA==
-NTRS_PLIST_PAYLOAD
+
+# Edit the LaunchDaemon directly inside this heredoc when customization is needed.
+/bin/cat <<'NTRS_PLIST' > "$PLIST_DEST"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ntrs.restartreminder</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/ntrs-restart-reminder</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StartInterval</key>
+    <integer>300</integer>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+
+    <key>StandardOutPath</key>
+    <string>/var/log/ntrs-restart-reminder-launchd.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/var/log/ntrs-restart-reminder-launchd.log</string>
+</dict>
+</plist>
+NTRS_PLIST
+
 /usr/sbin/chown root:wheel "$PLIST_DEST"
 /bin/chmod 644 "$PLIST_DEST"
 

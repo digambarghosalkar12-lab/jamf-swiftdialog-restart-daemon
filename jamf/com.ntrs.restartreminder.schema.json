@@ -14,6 +14,44 @@
       "type": "boolean",
       "default": false
     },
+    "WindowWidth": {
+      "title": "Reminder Window Width",
+      "description": "Width of the normal restart reminder window in pixels.",
+      "type": "integer",
+      "minimum": 300,
+      "default": 700
+    },
+    "WindowHeight": {
+      "title": "Reminder Window Height",
+      "description": "Height of the normal restart reminder window in pixels.",
+      "type": "integer",
+      "minimum": 200,
+      "default": 450
+    },
+    "WindowTitleFont": {
+      "title": "Reminder Title Font",
+      "description": "swiftDialog title font parameters, for example: name=Helvetica Neue,size=28,weight=bold,colour=#000000",
+      "type": "string",
+      "default": "size=28,weight=bold"
+    },
+    "WindowTitleAlignment": {
+      "title": "Reminder Title Alignment",
+      "type": "string",
+      "enum": ["left", "center", "right"],
+      "default": "left"
+    },
+    "WindowMessageFont": {
+      "title": "Reminder Message Font",
+      "description": "swiftDialog message font parameters, for example: name=Helvetica Neue,size=14,colour=#000000",
+      "type": "string",
+      "default": "size=14"
+    },
+    "WindowMessageAlignment": {
+      "title": "Reminder Message Alignment",
+      "type": "string",
+      "enum": ["left", "center", "right"],
+      "default": "left"
+    },
     "Message": {
       "title": "Message",
       "description": "Main restart reminder message shown to the user.",
@@ -61,6 +99,44 @@
       "title": "Final Forced Restart Icon",
       "type": "string",
       "default": "SF=exclamationmark.triangle.fill"
+    },
+    "ForceRestartWindowWidth": {
+      "title": "Forced Restart Window Width",
+      "description": "Width of the forced restart window in pixels.",
+      "type": "integer",
+      "minimum": 300,
+      "default": 700
+    },
+    "ForceRestartWindowHeight": {
+      "title": "Forced Restart Window Height",
+      "description": "Height of the forced restart window in pixels.",
+      "type": "integer",
+      "minimum": 200,
+      "default": 450
+    },
+    "ForceRestartWindowTitleFont": {
+      "title": "Forced Restart Title Font",
+      "description": "swiftDialog title font parameters, for example: name=Helvetica Neue,size=28,weight=bold,colour=#000000",
+      "type": "string",
+      "default": "size=28,weight=bold"
+    },
+    "ForceRestartWindowTitleAlignment": {
+      "title": "Forced Restart Title Alignment",
+      "type": "string",
+      "enum": ["left", "center", "right"],
+      "default": "left"
+    },
+    "ForceRestartWindowMessageFont": {
+      "title": "Forced Restart Message Font",
+      "description": "swiftDialog message font parameters, for example: name=Helvetica Neue,size=14,colour=#000000",
+      "type": "string",
+      "default": "size=14"
+    },
+    "ForceRestartWindowMessageAlignment": {
+      "title": "Forced Restart Message Alignment",
+      "type": "string",
+      "enum": ["left", "center", "right"],
+      "default": "left"
     },
     "CountDownTimer": {
       "title": "Final Countdown Timer (seconds)",

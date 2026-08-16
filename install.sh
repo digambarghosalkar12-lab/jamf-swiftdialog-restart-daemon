@@ -113,6 +113,22 @@ integer_pref() {
   fi
 }
 
+alignment_pref() {
+  local key="$1"
+  local fallback="$2"
+  local value
+  value="$(read_pref "$key" "$fallback")"
+  value="$(printf '%s' "$value" | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/tr -d '[:space:]')"
+
+  case "$value" in
+    left|center|centre|right) echo "$value" ;;
+    *)
+      log "Invalid ${key} value '${value}'; using ${fallback}."
+      echo "$fallback"
+      ;;
+  esac
+}
+
 state_read() {
   local key="$1"
   local fallback="$2"
@@ -284,12 +300,18 @@ show_standard_dialog() {
   local dialog="$1"
   local uid="$2"
 
-  local title message button icon banner
+  local title message button icon banner width height title_font title_alignment message_font message_alignment
   title="$(read_pref "MessageTitle" "Restart Required")"
   message="$(read_pref "Message" "Your Mac has been running for several days. Please restart to keep it secure and reliable.")"
   button="$(read_pref "ButtonName" "Restart Now")"
   icon="$(read_pref "Icon" "SF=arrow.clockwise.circle.fill")"
   banner="$(read_pref "Banner" "")"
+  width="$(integer_pref "WindowWidth" "700" "300")"
+  height="$(integer_pref "WindowHeight" "450" "200")"
+  title_font="$(read_pref "WindowTitleFont" "size=28,weight=bold")"
+  title_alignment="$(alignment_pref "WindowTitleAlignment" "left")"
+  message_font="$(read_pref "WindowMessageFont" "size=14")"
+  message_alignment="$(alignment_pref "WindowMessageAlignment" "left")"
 
   local snooze_used snooze_max
   snooze_used="$(state_read "SnoozeCount" "0")"
@@ -300,6 +322,11 @@ show_standard_dialog() {
     --title "$title"
     --message "$message"
     --button1text "$button"
+    --width "$width"
+    --height "$height"
+    --titlefont "${title_font},alignment=${title_alignment}"
+    --messagefont "$message_font"
+    --messagealignment "$message_alignment"
   )
 
   # PersistentWindow is controlled by Jamf.
@@ -328,12 +355,18 @@ show_force_dialog() {
   local dialog="$1"
   local uid="$2"
 
-  local title message icon banner timer
+  local title message icon banner timer width height title_font title_alignment message_font message_alignment
   title="$(read_pref "ForceRestartWindowTitle" "Restart Required Now")"
   message="$(read_pref "ForceRestartWindowMessage" "This Mac must restart. Save your work now. The computer will restart automatically when the countdown reaches zero.")"
   icon="$(read_pref "ForceRestartWindowIcon" "SF=exclamationmark.triangle.fill")"
   banner="$(read_pref "Banner" "")"
   timer="$(integer_pref "CountDownTimer" "900" "60")"
+  width="$(integer_pref "ForceRestartWindowWidth" "700" "300")"
+  height="$(integer_pref "ForceRestartWindowHeight" "450" "200")"
+  title_font="$(read_pref "ForceRestartWindowTitleFont" "size=28,weight=bold")"
+  title_alignment="$(alignment_pref "ForceRestartWindowTitleAlignment" "left")"
+  message_font="$(read_pref "ForceRestartWindowMessageFont" "size=14")"
+  message_alignment="$(alignment_pref "ForceRestartWindowMessageAlignment" "left")"
 
   local args=(
     "$dialog"
@@ -341,6 +374,11 @@ show_force_dialog() {
     --message "$message"
     --button1text "$(read_pref "ButtonName" "Restart Now")"
     --timer "$timer"
+    --width "$width"
+    --height "$height"
+    --titlefont "${title_font},alignment=${title_alignment}"
+    --messagefont "$message_font"
+    --messagealignment "$message_alignment"
     --ontop
     --quitkey "k"
   )

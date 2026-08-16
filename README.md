@@ -34,6 +34,10 @@ snoozes used, and next eligible prompt.
 15. Log file location
 16. Enabled / disabled
 17. Persistent window
+18. Normal reminder window width and height
+19. Forced restart window width and height
+20. Normal reminder title/message fonts and alignment
+21. Forced restart title/message fonts and alignment
 
 ## User flow
 

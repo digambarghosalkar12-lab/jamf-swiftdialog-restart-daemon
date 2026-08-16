@@ -192,11 +192,16 @@ Run:
 ./generate-jamf-assets.sh
 ```
 
-This creates `dist/jamf-install.sh`, `dist/jamf-uninstall.sh`, and
-`dist/com.ntrs.restartreminder.schema.json`. Add the install or uninstall script
-to a Jamf policy and paste the JSON file into **Application & Custom Settings**.
+The generator prompts for all three asset filenames and shows the required
+format and an example for each. Press Return to accept the displayed default.
+It then creates the named install script, uninstall script, and Custom JSON
+Schema under `dist/`. Add the install or uninstall script to a Jamf policy and
+paste the JSON file into **Application & Custom Settings**.
 
 An alternate output directory can be supplied as the first argument.
+
+For unattended generation, set `JAMF_INSTALL_ASSET_NAME`,
+`JAMF_UNINSTALL_ASSET_NAME`, and `JAMF_SCHEMA_ASSET_NAME`.
 
 ### Uninstallation
 

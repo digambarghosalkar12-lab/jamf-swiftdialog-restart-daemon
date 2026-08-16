@@ -10,9 +10,67 @@ SCHEMA_SOURCE="${PROJECT_DIR}/jamf/com.ntrs.restartreminder.schema.json"
 UNINSTALL_SOURCE="${PROJECT_DIR}/uninstall.sh"
 OUTPUT_DIR="${1:-${PROJECT_DIR}/dist}"
 
-INSTALL_OUTPUT="${OUTPUT_DIR}/jamf-install.sh"
-UNINSTALL_OUTPUT="${OUTPUT_DIR}/jamf-uninstall.sh"
-SCHEMA_OUTPUT="${OUTPUT_DIR}/com.ntrs.restartreminder.schema.json"
+INSTALL_ASSET_NAME="${JAMF_INSTALL_ASSET_NAME:-}"
+UNINSTALL_ASSET_NAME="${JAMF_UNINSTALL_ASSET_NAME:-}"
+SCHEMA_ASSET_NAME="${JAMF_SCHEMA_ASSET_NAME:-}"
+
+prompt_asset_filename() {
+  local variable_name="$1"
+  local asset_label="$2"
+  local required_suffix="$3"
+  local example="$4"
+  local default_name="$5"
+  local current_value="${(P)variable_name}"
+  local reply
+
+  if [[ -n "$current_value" ]]; then
+    reply="$current_value"
+  elif [[ -t 0 ]]; then
+    echo ""
+    echo "Enter the ${asset_label} asset filename."
+    echo "Format: <asset-name>${required_suffix}"
+    echo "Example: ${example}"
+    printf "Filename [%s]: " "$default_name"
+    IFS= read -r reply
+    [[ -n "$reply" ]] || reply="$default_name"
+  else
+    reply="$default_name"
+  fi
+
+  if [[ ! "$reply" =~ '^[A-Za-z0-9][A-Za-z0-9._-]*$' ]] || \
+      [[ "$reply" != *"${required_suffix}" ]]; then
+    echo "Invalid ${asset_label} filename: ${reply}" >&2
+    echo "Required format: <asset-name>${required_suffix}" >&2
+    exit 1
+  fi
+
+  typeset -g "$variable_name"="$reply"
+}
+
+prompt_asset_filename \
+  INSTALL_ASSET_NAME \
+  "Jamf install script" \
+  "-install.sh" \
+  "ntrs-restart-reminder-install.sh" \
+  "jamf-install.sh"
+
+prompt_asset_filename \
+  UNINSTALL_ASSET_NAME \
+  "Jamf uninstall script" \
+  "-uninstall.sh" \
+  "ntrs-restart-reminder-uninstall.sh" \
+  "jamf-uninstall.sh"
+
+prompt_asset_filename \
+  SCHEMA_ASSET_NAME \
+  "Jamf Custom JSON Schema" \
+  ".json" \
+  "com.ntrs.restartreminder.schema.json" \
+  "com.ntrs.restartreminder.schema.json"
+
+INSTALL_OUTPUT="${OUTPUT_DIR}/${INSTALL_ASSET_NAME}"
+UNINSTALL_OUTPUT="${OUTPUT_DIR}/${UNINSTALL_ASSET_NAME}"
+SCHEMA_OUTPUT="${OUTPUT_DIR}/${SCHEMA_ASSET_NAME}"
 
 for required_file in \
   "$CONTROLLER_SOURCE" \
